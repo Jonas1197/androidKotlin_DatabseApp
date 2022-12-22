@@ -1,11 +1,11 @@
-package com.example.databasefun
+package com.example.databasefun.cache
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [(UserData::class)], version = 1)
+@Database(entities = [(CacheUserData::class)], version = 1)
 abstract class UserDataDatabase: RoomDatabase() {
 
     abstract fun userDataDao(): UserDataDao

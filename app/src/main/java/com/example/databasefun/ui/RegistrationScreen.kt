@@ -1,25 +1,24 @@
-package com.example.databasefun
+package com.example.databasefun.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.databasefun.ui.theme.bold
-import com.example.databasefun.ui.theme.medium
-import com.example.databasefun.ui.theme.regular
-import com.example.databasefun.ui.theme.welcomeScreen_Description
+import com.example.databasefun.R
+import com.example.databasefun.presentation.RegistrationViewModel
+import com.example.databasefun.ui.theme.*
 
 @Preview
 @Composable
@@ -40,6 +39,24 @@ fun RegistrationScreen() {
     ) {
 
         Column {
+            if(viewModel.state.showsAlerts) {
+                AlertDialog(
+                    title = {
+                        Text(text = "Please fill all the details!")
+                    },
+                    buttons = {
+                        Button(
+                            onClick = { viewModel.updateShowsAlert(false) }
+                        ) {
+                            Text(text = "LOL")
+                        }
+                    },
+
+                    onDismissRequest = {
+                        viewModel.updateShowsAlert(false)
+                    }
+                )
+            }
 
             Row(
                 modifier = Modifier
@@ -122,7 +139,7 @@ fun RegistrationScreen() {
                         .fillMaxWidth()
                         .padding(16.dp),
                     onClick = {
-
+                        viewModel.updateShowsAlert()
                     }
                 )
             }

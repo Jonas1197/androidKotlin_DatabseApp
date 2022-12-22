@@ -1,4 +1,4 @@
-package com.example.databasefun
+package com.example.databasefun.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost

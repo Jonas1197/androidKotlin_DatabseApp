@@ -1,4 +1,4 @@
-package com.example.databasefun
+package com.example.databasefun.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.material.Button

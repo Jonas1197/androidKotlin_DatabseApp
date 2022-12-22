@@ -1,4 +1,4 @@
-package com.example.databasefun
+package com.example.databasefun.cache
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "saved_data")
-class UserData {
+class CacheUserData {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull

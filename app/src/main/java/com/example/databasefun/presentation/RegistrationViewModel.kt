@@ -1,9 +1,11 @@
-package com.example.databasefun
+package com.example.databasefun.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RegistrationViewModel: ViewModel() {
 
@@ -34,8 +36,8 @@ class RegistrationViewModel: ViewModel() {
         )
     }
 
-    fun containsFullDetails(): Boolean {
-        return !(
+    private fun containsFullDetails(): Boolean {
+        return (
                 state.firstName.isNullOrEmpty() ||
                         state.lastName.isNullOrEmpty() ||
                         state.fullAddress.isNullOrEmpty() ||
@@ -47,5 +49,17 @@ class RegistrationViewModel: ViewModel() {
         return "Full name: ${state.firstName} ${state.lastName}\n" +
                 "Address: ${state.fullAddress}\n" +
                 "Serial number: ${state.serialNumber}"
+    }
+
+    fun updateShowsAlert(showsAlert: Boolean? = null) {
+        state = state.copy(
+            showsAlerts = showsAlert ?: containsFullDetails()
+        )
+
+        print("\n~~> ALERT: ${state.showsAlerts}")
+    }
+
+    fun update() {
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.databasefun
+package com.example.databasefun.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
