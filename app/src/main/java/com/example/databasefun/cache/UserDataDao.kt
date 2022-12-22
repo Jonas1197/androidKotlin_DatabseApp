@@ -26,7 +26,4 @@ interface UserDataDao {
     @Query("SELECT * FROM saved_data WHERE serial_number = :serialNumber")
     fun findUserDataBySerialNumber(serialNumber: String): Flow<List<CacheUserData>>
 
-    @Query("SELECT * FROM saved_data")
-    fun getAllUserData(): Flow<List<CacheUserData>>
-
 }

@@ -1,16 +1,24 @@
 package com.example.databasefun.presentation
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import androidx.lifecycle.viewModelScope
+import com.example.databasefun.cache.CacheUserData
+import com.example.databasefun.cache.UserDataDatabase
+import com.example.databasefun.domain.usecases.InsertUserDataUseCase
+import kotlinx.coroutines.launch
 
-class RegistrationViewModel: ViewModel() {
+class RegistrationViewModel(
+    application: Application
+): ViewModel() {
 
     var state by mutableStateOf(RegistrationState())
         private set
+
+    val database = UserDataDatabase.getInstance(application)
 
     fun updateFirstName(firstName: String) {
         state = state.copy(
@@ -37,12 +45,8 @@ class RegistrationViewModel: ViewModel() {
     }
 
     private fun containsFullDetails(): Boolean {
-        return (
-                state.firstName.isNullOrEmpty() ||
-                        state.lastName.isNullOrEmpty() ||
-                        state.fullAddress.isNullOrEmpty() ||
-                        state.serialNumber.isNullOrEmpty()
-                )
+        return !(state.firstName.isNullOrEmpty() && state.lastName.isNotEmpty()
+            || state.fullAddress.isNotEmpty() || state.serialNumber.isNotEmpty())
     }
 
     fun registrationDetails(): String {
@@ -56,10 +60,30 @@ class RegistrationViewModel: ViewModel() {
             showsAlerts = showsAlert ?: containsFullDetails()
         )
 
+        if(containsFullDetails()) {
+            val useCase = InsertUserDataUseCase(database)
+            viewModelScope.launch {
+                useCase.invoke(
+                    CacheUserData(
+                        firstName = state.firstName,
+                        lastName = state.lastName,
+                        fullAddress = state.fullAddress,
+                        serialNumber = state.serialNumber
+                    )
+                )
+            }
+        }
+
+        // Get users by name
+//        viewModelScope.launch {
+//            val users = FindUserByFirstNameUseCase(database)
+//                .invoke("Name")
+//
+//            users.collectLatest {
+//                it.last()
+//            }
+//        }
+
         print("\n~~> ALERT: ${state.showsAlerts}")
-    }
-
-    fun update() {
-
     }
 }

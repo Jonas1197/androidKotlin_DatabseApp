@@ -10,7 +10,6 @@ class UserDataRepository(
     private val userDataDao: UserDataDao
 ) {
 
-    val allCacheUserData: Flow<List<CacheUserData>> = userDataDao.getAllUserData()
     val searchResults = MutableLiveData<List<CacheUserData>>()
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
@@ -23,19 +22,19 @@ class UserDataRepository(
         userDataDao.deleteUserData(serialNumber)
     }
 
-    fun findUserDataByFirstName(firstName: String) {
-        userDataDao.findUserDataByFirstName(firstName)
+    fun findUsersDataByFirstName(firstName: String): Flow<List<CacheUserData>> {
+        return userDataDao.findUserDataByFirstName(firstName)
     }
 
-    fun findUserDataByLastName(lastName: String) {
-        userDataDao.findUserDataByLastName(lastName)
+    fun findUsersDataByLastName(lastName: String): Flow<List<CacheUserData>> {
+        return userDataDao.findUserDataByLastName(lastName)
     }
 
-    fun findUserDataByFullAddress(fullAddress: String) {
-        userDataDao.findUserDataByFullAddress(fullAddress)
+    fun findUsersDataByFullAddress(fullAddress: String): Flow<List<CacheUserData>> {
+        return userDataDao.findUserDataByFullAddress(fullAddress)
     }
 
-    fun findUserDataBySerialNumber(serialNumber: String) {
-        userDataDao.findUserDataBySerialNumber(serialNumber)
+    fun findUsersDataBySerialNumber(serialNumber: String): Flow<List<CacheUserData>> {
+        return userDataDao.findUserDataBySerialNumber(serialNumber)
     }
 }

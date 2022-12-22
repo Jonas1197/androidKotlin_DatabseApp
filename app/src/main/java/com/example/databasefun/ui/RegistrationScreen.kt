@@ -1,5 +1,6 @@
 package com.example.databasefun.ui
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -25,7 +26,7 @@ import com.example.databasefun.ui.theme.*
 fun RegistrationScreen() {
     val focusManager = LocalFocusManager.current
 
-    val viewModel = RegistrationViewModel()
+    val viewModel = RegistrationViewModel(application = Application())
 
     Box(
         modifier = Modifier
@@ -140,6 +141,7 @@ fun RegistrationScreen() {
                         .padding(16.dp),
                     onClick = {
                         viewModel.updateShowsAlert()
+                        //
                     }
                 )
             }
