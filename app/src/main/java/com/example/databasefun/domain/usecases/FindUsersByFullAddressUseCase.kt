@@ -5,8 +5,7 @@ import com.example.databasefun.cache.UserDataDatabase
 import com.example.databasefun.data.UserDataRepository
 import kotlinx.coroutines.flow.Flow
 
-
-class FindUsersBySerialNumber(
+class FindUsersByFullAddressUseCase(
     database: UserDataDatabase
 ) {
 
@@ -14,8 +13,8 @@ class FindUsersBySerialNumber(
         userDataDao = database.userDataDao()
     )
 
-    operator fun invoke(serialNumber: String): Flow<List<CacheUserData>> {
-        return repository.findUsersDataBySerialNumber(serialNumber)
+    operator fun invoke(fullAddress: String): Flow<List<CacheUserData>> {
+        return repository.findUsersDataByFullAddress(fullAddress)
     }
 
 }

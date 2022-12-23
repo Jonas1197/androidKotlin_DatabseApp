@@ -37,4 +37,8 @@ class UserDataRepository(
     fun findUsersDataBySerialNumber(serialNumber: String): Flow<List<CacheUserData>> {
         return userDataDao.findUserDataBySerialNumber(serialNumber)
     }
+
+    fun getSavedUserData(): Flow<List<CacheUserData>> {
+        return userDataDao.getSavedUserData()
+    }
 }

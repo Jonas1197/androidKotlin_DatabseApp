@@ -5,16 +5,16 @@ import com.example.databasefun.cache.UserDataDatabase
 import com.example.databasefun.data.UserDataRepository
 import kotlinx.coroutines.flow.Flow
 
-class FindUsersByLastName(
+class GetSavedUserDataUseCase(
     database: UserDataDatabase
 ) {
 
     private val repository = UserDataRepository(
-        userDataDao = database.userDataDao()
+        database.userDataDao()
     )
 
-    operator fun invoke(lastName: String): Flow<List<CacheUserData>> {
-        return repository.findUsersDataByLastName(lastName)
+    operator fun invoke(): Flow<List<CacheUserData>> {
+        return repository.getSavedUserData()
     }
 
 }

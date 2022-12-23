@@ -2,6 +2,7 @@ package com.example.databasefun.cache
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
@@ -25,5 +26,8 @@ interface UserDataDao {
 
     @Query("SELECT * FROM saved_data WHERE serial_number = :serialNumber")
     fun findUserDataBySerialNumber(serialNumber: String): Flow<List<CacheUserData>>
+
+    @Query("SELECT * FROM saved_data")
+    fun getSavedUserData(): Flow<List<CacheUserData>>
 
 }

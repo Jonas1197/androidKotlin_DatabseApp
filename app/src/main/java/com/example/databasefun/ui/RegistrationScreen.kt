@@ -24,11 +24,11 @@ import com.example.databasefun.ui.theme.*
 @Composable
 fun RegistrationScreen(
     application: Application,
+    viewModel: RegistrationViewModel = RegistrationViewModel(application),
     navController: NavController
 ) {
     val focusManager = LocalFocusManager.current
 
-    val viewModel = RegistrationViewModel(application = application)
 
     Box(
         modifier = Modifier
@@ -41,27 +41,26 @@ fun RegistrationScreen(
             }
     ) {
 
-        Column {
-            if(viewModel.state.showsAlert) {
-                println("\n~~> Alert is: ${viewModel.state.showsAlert}")
-                AlertDialog(
-                    title = {
-                        Text(text = "Please fill all the details!")
-                    },
-                    buttons = {
-                        Button(
-                            onClick = { viewModel.updateData(false) }
-                        ) {
-                            Text(text = "LOL")
-                        }
-                    },
-
-                    onDismissRequest = {
-                        viewModel.updateData(false)
+        if(viewModel.state.showsAlert) {
+            AlertDialog(
+                title = {
+                    Text(text = "Please fill all the details!")
+                },
+                buttons = {
+                    Button(
+                        onClick = { viewModel.updateShowsAlert(false) }
+                    ) {
+                        Text(text = "LOL")
                     }
-                )
-            }
+                },
 
+                onDismissRequest = {
+                    viewModel.updateShowsAlert(false)
+                }
+            )
+        }
+
+        Column {
             Row(
                 modifier = Modifier
                     .padding(16.dp)
@@ -142,9 +141,15 @@ fun RegistrationScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
+
                     onClick = {
-//                        viewModel.updateData()
-                        navController.navigate(Screen.LicencePresentationScreen.route)
+
+                        if(viewModel.canRegister()) {
+                            viewModel.updateData()
+                            navController.navigate(Screen.LicencePresentationScreen.route)
+                        } else {
+                            viewModel.updateShowsAlert(true)
+                        }
                     }
                 )
             }

@@ -9,7 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.databasefun.cache.CacheUserData
 import com.example.databasefun.cache.UserDataDatabase
 import com.example.databasefun.domain.usecases.InsertUserDataUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 class RegistrationViewModel(
     application: Application
@@ -44,8 +47,14 @@ class RegistrationViewModel(
         )
     }
 
-    private fun containsFullDetails() = !(state.firstName.isNullOrEmpty() && state.lastName.isNotEmpty()
-            || state.fullAddress.isNotEmpty() || state.serialNumber.isNotEmpty())
+    fun updateShowsAlert(showsAlert: Boolean) {
+        state = state.copy(
+            showsAlert = showsAlert
+        )
+    }
+
+    private fun containsFullDetails() = (state.firstName.isNotEmpty() && state.lastName.isNotEmpty()
+            && state.fullAddress.isNotEmpty() && state.serialNumber.isNotEmpty())
 
 
     fun registrationDetails(): String {
@@ -54,24 +63,26 @@ class RegistrationViewModel(
                 "Serial number: ${state.serialNumber}"
     }
 
+    fun canRegister(): Boolean = containsFullDetails()
+
     fun updateData(showsAlert: Boolean? = null) {
         state = state.copy(
             showsAlert = showsAlert ?: containsFullDetails()
         )
 
-//        if(containsFullDetails()) {
-//            val useCase = InsertUserDataUseCase(database)
-//            viewModelScope.launch {
-//                useCase.invoke(
-//                    CacheUserData(
-//                        firstName = state.firstName,
-//                        lastName = state.lastName,
-//                        fullAddress = state.fullAddress,
-//                        serialNumber = state.serialNumber
-//                    )
-//                )
-//            }
-//        }
+        if(containsFullDetails()) {
+            val useCase = InsertUserDataUseCase(database)
+            (viewModelScope + Dispatchers.IO).launch {
+                useCase.invoke(
+                    CacheUserData(
+                        firstName = state.firstName,
+                        lastName = state.lastName,
+                        fullAddress = state.fullAddress,
+                        serialNumber = state.serialNumber
+                    )
+                )
+            }
+        }
 
         // Get users by name
 //        viewModelScope.launch {
@@ -83,6 +94,5 @@ class RegistrationViewModel(
 //            }
 //        }
 
-        print("\n~~> ALERT: ${state.showsAlert}")
     }
 }

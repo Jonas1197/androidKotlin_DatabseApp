@@ -6,6 +6,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.databasefun.cache.UserDataDao
+import com.example.databasefun.cache.UserDataDatabase
+import com.example.databasefun.data.UserDataRepository
+import com.example.databasefun.domain.usecases.GetSavedUserDataUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.invoke
 
 @Composable
 fun Navigation() {
@@ -28,10 +35,15 @@ fun Navigation() {
         }
 
         composable(Screen.LicencePresentationScreen.route) {
+            UserDataDatabase.getInstance(
+                applicationContext as Application
+            )
+
             LicencePresentationScreen(
                 application = applicationContext as Application,
                 navController = navController
             )
+
         }
     }
 }
