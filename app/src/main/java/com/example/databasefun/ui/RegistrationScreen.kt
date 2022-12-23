@@ -14,47 +14,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.databasefun.R
 import com.example.databasefun.presentation.RegistrationViewModel
 import com.example.databasefun.ui.theme.*
 
-@Preview
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(
+    application: Application,
+    navController: NavController
+) {
     val focusManager = LocalFocusManager.current
 
-    val viewModel = RegistrationViewModel(application = Application())
+    val viewModel = RegistrationViewModel(application = application)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Blue)
+            .background(Color.Blue)
             .pointerInput(Unit) {
-                detectTapGestures(onTap = {
+                detectTapGestures {
                     focusManager.clearFocus()
-                })
+                }
             }
     ) {
 
         Column {
-            if(viewModel.state.showsAlerts) {
+            if(viewModel.state.showsAlert) {
+                println("\n~~> Alert is: ${viewModel.state.showsAlert}")
                 AlertDialog(
                     title = {
                         Text(text = "Please fill all the details!")
                     },
                     buttons = {
                         Button(
-                            onClick = { viewModel.updateShowsAlert(false) }
+                            onClick = { viewModel.updateData(false) }
                         ) {
                             Text(text = "LOL")
                         }
                     },
 
                     onDismissRequest = {
-                        viewModel.updateShowsAlert(false)
+                        viewModel.updateData(false)
                     }
                 )
             }
@@ -140,8 +143,8 @@ fun RegistrationScreen() {
                         .fillMaxWidth()
                         .padding(16.dp),
                     onClick = {
-                        viewModel.updateShowsAlert()
-                        //
+//                        viewModel.updateData()
+                        navController.navigate(Screen.LicencePresentationScreen.route)
                     }
                 )
             }

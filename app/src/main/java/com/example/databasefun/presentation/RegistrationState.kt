@@ -7,6 +7,6 @@ data class RegistrationState(
     val fullAddress: String = "",
     val serialNumber: String = "",
 
-    val showsAlerts: Boolean = false
+    val showsAlert: Boolean = false
 
 )

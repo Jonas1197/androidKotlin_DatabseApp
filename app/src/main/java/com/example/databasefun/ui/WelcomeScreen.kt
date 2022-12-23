@@ -86,7 +86,6 @@ fun WelcomeScreen(
                         navController.navigate(Screen.RegistrationScreen.route)
                     }
                 )
-                
             }
         }
     }

@@ -44,10 +44,9 @@ class RegistrationViewModel(
         )
     }
 
-    private fun containsFullDetails(): Boolean {
-        return !(state.firstName.isNullOrEmpty() && state.lastName.isNotEmpty()
+    private fun containsFullDetails() = !(state.firstName.isNullOrEmpty() && state.lastName.isNotEmpty()
             || state.fullAddress.isNotEmpty() || state.serialNumber.isNotEmpty())
-    }
+
 
     fun registrationDetails(): String {
         return "Full name: ${state.firstName} ${state.lastName}\n" +
@@ -55,24 +54,24 @@ class RegistrationViewModel(
                 "Serial number: ${state.serialNumber}"
     }
 
-    fun updateShowsAlert(showsAlert: Boolean? = null) {
+    fun updateData(showsAlert: Boolean? = null) {
         state = state.copy(
-            showsAlerts = showsAlert ?: containsFullDetails()
+            showsAlert = showsAlert ?: containsFullDetails()
         )
 
-        if(containsFullDetails()) {
-            val useCase = InsertUserDataUseCase(database)
-            viewModelScope.launch {
-                useCase.invoke(
-                    CacheUserData(
-                        firstName = state.firstName,
-                        lastName = state.lastName,
-                        fullAddress = state.fullAddress,
-                        serialNumber = state.serialNumber
-                    )
-                )
-            }
-        }
+//        if(containsFullDetails()) {
+//            val useCase = InsertUserDataUseCase(database)
+//            viewModelScope.launch {
+//                useCase.invoke(
+//                    CacheUserData(
+//                        firstName = state.firstName,
+//                        lastName = state.lastName,
+//                        fullAddress = state.fullAddress,
+//                        serialNumber = state.serialNumber
+//                    )
+//                )
+//            }
+//        }
 
         // Get users by name
 //        viewModelScope.launch {
@@ -84,6 +83,6 @@ class RegistrationViewModel(
 //            }
 //        }
 
-        print("\n~~> ALERT: ${state.showsAlerts}")
+        print("\n~~> ALERT: ${state.showsAlert}")
     }
 }
